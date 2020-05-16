@@ -33,8 +33,31 @@ class MaxHeap {
     return Math.floor(i / 2);
   }
 
-  _maxHeapify(i) {
+  _swap(i, j) {
+    // Note: in a language like C, Java or Rust, where the array is full of records
+    // instead of references to records, we would need to swap the priority and
+    // the reference to the element instead of the records themselves.
+    const temp = this._storage[i];
+    this._storage[i] = this._storage[j];
+    this._storage[j] = temp;
+  }
 
+  _maxHeapify(i) {
+    const priority = (i) => this._storage[i].priority;
+    const l = this._left(i);
+    const r = this._right(i);
+
+    let biggest = i;
+    if (l <= this._count && priority(l) > priority(i)) {
+      biggest = l;
+    }
+    if (r <= this._count && priority(r) > priority(biggest)) {
+      biggest = r;
+    }
+    if (biggest !== i) {
+      this._swap(i, biggest);
+      this._maxHeapify(biggest);
+    }
   }
 
   /**
@@ -51,7 +74,6 @@ class MaxHeap {
 
     this._count += 1;
     let i = this._count;
-    // console.log(`Inserted record with priority ${priority} at location ${i}`);
 
     const record = this._storage[i];
     record.priority = priority;
@@ -60,13 +82,7 @@ class MaxHeap {
     let p = this._parent(i);
     let parent = this._storage[p];
     while (parent && record.priority > parent.priority) {
-      // console.log(`Swapping record at ${i} (pri ${record.priority}) with ${p} (pri ${parent.priority})`);
-      // Swap record and parent (bubble up)
-      // Note: in a language like C, Java or Rust, where the array is full of records
-      // instead of references to records, we would need to swap the priority and
-      // the reference to the element instead of the records themselves.
-      this._storage[p] = record;
-      this._storage[i] = parent;
+      this._swap(i, p);
 
       // Reset i to the new location, take a reference to the new parent, and repeat
       i = p;
@@ -85,10 +101,14 @@ class MaxHeap {
       return undefined;
     }
 
-    const record = this._storage[1];
+    const element = this._storage[1].element;
+    this._storage[1].element = undefined; // clear stale reference
 
+    this._swap(1, this._count);
     this._count -= 1;
-    return record.element;
+    this._maxHeapify(1);
+
+    return element;
   }
 
   /** 

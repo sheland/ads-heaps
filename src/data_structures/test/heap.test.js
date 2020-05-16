@@ -87,7 +87,7 @@ describe(MaxHeap, () => {
     });
 
     it('is a max heap after reverse-sorted inserts', () => {
-      [9, 8, 7, 6, 5, 4, 3, 2, 1].forEach(i => {
+      [9, 8, 7, 6, 5, 4, 3, 2, 1, 0].forEach(i => {
         heap.insert(i, `element_${i}`);
         expect(heap.isMaxHeap()).toBeTruthy();
       });
@@ -123,15 +123,32 @@ describe(MaxHeap, () => {
     });
 
     it('removes the max element if it was inserted first', () => {
-
+      [9, 8, 7, 6, 5, 4, 3, 2, 1, 0].forEach(i => {
+        heap.insert(i, `element_${i}`);
+      });
+      expect(heap.count()).toBe(10);
+      expect(heap.removeNext()).toBe(`element_9`);
+      expect(heap.count()).toBe(9);
     });
-
+      
     it('removes the max element if it was inserted last', () => {
-
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(i => {
+        heap.insert(i, `element_${i}`);
+        expect(heap.isMaxHeap()).toBeTruthy();
+      });
+      expect(heap.count()).toBe(10);
+      expect(heap.removeNext()).toBe(`element_9`);
+      expect(heap.count()).toBe(9);
     });
 
     it('removes the max element if it was inserted in the middle', () => {
-
+      [3, 7, 0, 8, 2, 5, 1, 4, 9, 6].forEach(i => {
+        heap.insert(i, `element_${i}`);
+        expect(heap.isMaxHeap()).toBeTruthy();
+      });
+      expect(heap.count()).toBe(10);
+      expect(heap.removeNext()).toBe(`element_9`);
+      expect(heap.count()).toBe(9);
     });
 
     it('removes all sorted input in priority order', () => {

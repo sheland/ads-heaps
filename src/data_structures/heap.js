@@ -78,7 +78,7 @@ class MaxHeap {
   /**
    * Remove and return the record with the highest priority
    * 
-   * @returns {*} The data stored in the highest-priority record
+   * @returns {*} The data stored in the highest-priority record, or undefined if the queue is empty
    */
   removeNext() {
     if (this._count === 0) {

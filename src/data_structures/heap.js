@@ -42,21 +42,40 @@ class MaxHeap {
     this._storage[j] = temp;
   }
 
-  _maxHeapify(i) {
-    const priority = (i) => this._storage[i].priority;
-    const l = this._left(i);
-    const r = this._right(i);
+  _float(i) {
+    const priority = (j) => this._storage[j].priority;
 
-    let biggest = i;
-    if (l <= this._count && priority(l) > priority(i)) {
-      biggest = l;
+    let p = this._parent(i);
+    while (p > 0 && priority(i) > priority(p)) {
+      this._swap(i, p);
+
+      i = p;
+      p = this._parent(i);
     }
-    if (r <= this._count && priority(r) > priority(biggest)) {
-      biggest = r;
-    }
-    if (biggest !== i) {
-      this._swap(i, biggest);
-      this._maxHeapify(biggest);
+  }
+
+  _sink(i) {
+    const inBounds = (j) => j <= this._count;
+    const priority = (j) => this._storage[j].priority;
+
+    let finished = false;
+    while (!finished) {
+      const l = this._left(i);
+      const r = this._right(i);
+
+      let max = i;
+      if (inBounds(l) && priority(l) > priority(i)) {
+        max = l;
+      }
+      if (inBounds(r) && priority(r) > priority(max)) {
+        max = r;
+      }
+      if (max === i) {
+        finished = true;
+      } else {
+        this._swap(i, max);
+        i = max;
+      }
     }
   }
 
@@ -73,22 +92,12 @@ class MaxHeap {
     }
 
     this._count += 1;
-    let i = this._count;
 
-    const record = this._storage[i];
+    const record = this._storage[this._count];
     record.priority = priority;
     record.element = element;
 
-    let p = this._parent(i);
-    let parent = this._storage[p];
-    while (parent && record.priority > parent.priority) {
-      this._swap(i, p);
-
-      // Reset i to the new location, take a reference to the new parent, and repeat
-      i = p;
-      p = this._parent(i);
-      parent = this._storage[p];
-    }
+    this._float(this._count);
   }
 
   /**
@@ -106,7 +115,7 @@ class MaxHeap {
 
     this._swap(1, this._count);
     this._count -= 1;
-    this._maxHeapify(1);
+    this._sink(1);
 
     return element;
   }

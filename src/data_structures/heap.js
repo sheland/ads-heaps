@@ -36,7 +36,7 @@ class MaxHeap {
    * @param {{priority: number, element: *}[]} [array] Data to sort. The given array must be 1-indexed, and records must have the given form.
    */
   static heapsort(array) {
-    const heap = new MaxHeap({fromArray: array});
+    const heap = new MaxHeap({ fromArray: array });
     heap.sort();
   }
 

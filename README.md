@@ -1,10 +1,10 @@
-# Linear Data Structures Lab
+# Heaps Lab
 
 Ada Developers Academy / Lovelace Learning Labs
 
 Advanced Data Structures 1 - Trees
 
-Week 1
+Week 4
 
 ## Instructions
 
@@ -27,23 +27,26 @@ Run tests in watch mode
 $ npm test
 ```
 
-Run local web server for visualizations (port 9000)
-
-```sh
-$ npm start
-```
-
 ## Assignment
 
 ### Core
 
-1. Read through the code in [array_queue.js](src/data_structures/array_queue.js) and [queue.test.js](src/data_structures/queue.test.js), and ensure you understand how and why it works
-1. Following the design suggested in the video lesson, implement the `DoublyLinkedList` class in [doubly_linked_list.js](src/data_structures/doubly_linked_list.js) to make [the tests](src/data_structures/doubly_linked_list.test.js) pass
-1. Use your `DoublyLinkedList` to implement the [`DLLQueue` class](src/data_structures/dll_queue.js) to pass the tests in [queue.test.js](src/data_structures/queue.test.js)
+1. Read through the existing code in `heap.js` and skim the tests in `heap.test.js`
+1. Implement `insert` and `_float` to make the appropriate tests pass
+1. Implement `removeMax` and `_sink` to make the appropriate tests pass
+1. Implement `_buildheap` to make the appropriate tests pass
+1. Implement `heapsort` to make the appropriate tests pass
 
 ### Optional
 
-1. Write functions to serialize and deserialize a DLLQueue
-    - How will you test your functions?
-1. Following the interface discussed in class, design and implement a Stack data structure using either an array or your `DoublyLinkedList`
-    - Make sure it's well tested! You're welcome to use the queue tests as a starting point.
+**Submit your assignment in Learn before starting to work on these, then do them on a branch**
+
+1. Test and implement a function to remove an element from the heap. What does the interface for this look like?
+1. Modify your heap to use a 0-indexed array.
+1. Make your heap accept arbitrary data:
+    - Modify the constructor to take an optional callback `isHigherPriority`, and use it to compare records in `float` and `sink`
+        - What should the default value of `isHigherPriority` be?
+        - Test your capabilities by creating a min-heap
+    - Modify `insert` to take an opaque record object instead of a priority and element. Fix all the tests that break!
+    - Modify `removeMax` to return an opaque record object. Fix all the tests that break!
+    - Test your implementation by heapsorting an array of integers, an array of strings, and an array of complex objects

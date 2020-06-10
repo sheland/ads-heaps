@@ -15,7 +15,7 @@ class MaxHeap {
       this._buildheap();
 
     } else {
-      this.size = size;
+      this._size = size;
 
       // Create storage array with sentinel
       this._storage = [null];

@@ -10,12 +10,12 @@ class MaxHeap {
   constructor({ size = this.constructor.DEFAULT_SIZE, fromArray } = {}) {
     if (fromArray) {
       this._storage = fromArray;
-      this._size = fromArray.length - 1;
-      this._count = this._size;
+      this.size = fromArray.length - 1;
+      this._count = this.size;
       this._buildheap();
 
     } else {
-      this._size = size;
+      this.size = size;
 
       // Create storage array with sentinel
       this._storage = [null];

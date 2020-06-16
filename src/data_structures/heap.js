@@ -62,15 +62,48 @@ class MaxHeap {
   }
 
   _float(i) {
-    // TODO
+    const priority = (j) => this._storage[j].priority;
+
+    let p = this._parent(i);
+    while (p > 0 && priority(i) > priority(p)) {
+      this._swap(i, p);
+
+      i = p;
+      p = this._parent(i);
+    }
   }
 
   _sink(i) {
-    // TODO
+    const inBounds = (j) => j <= this._count;
+    const priority = (j) => this._storage[j].priority;
+
+    let complete = false;
+    while (!complete) {
+      const leftChild = this._left(i);
+      const rightChild = this._right(i);
+
+      let max = i;
+      if (inBounds(leftChild) && priority(leftChild) > priority(i)) {
+        max = leftChild;
+      }
+      if (inBounds(rightChild) && priority(rightChild) > priority(max)) {
+        max = rightChild;
+      }
+      if (max === i) {
+        complete = true;
+      } else {
+        this._swap(i, max);
+        i = max;
+      }
+    }
   }
 
   _buildheap() {
-    // TODO
+    const midpoint = Math.floor(this._size / 2);
+
+    for (let i = midpoint; i > 0; i--) {
+      this._sink(i);
+    }
   }
 
   /**
@@ -81,7 +114,15 @@ class MaxHeap {
    * @throws If the heap is full
    */
   insert(priority, element) {
-    // TODO
+    if (this._count >= this.size) {
+      throw new Error("over space capacity");
+    }
+    this._count++;
+    let record = { priority, element };
+    let childIndex = this._count;
+    this._storage[childIndex] = record;
+
+    this._float(childIndex);
   }
 
   /**
@@ -90,7 +131,18 @@ class MaxHeap {
    * @returns {*} The data stored in the highest-priority record, or undefined if the queue is empty
    */
   removeMax() {
-    // TODO
+    if (this._count === 0) {
+      return undefined;
+    }
+
+    const ele = this._storage[1].element;
+    this._storage[1].element = undefined;
+
+    this._swap(1, this._count);
+    this._count--;
+    this._sink(1);
+
+    return ele;
   }
 
   /** 
@@ -111,7 +163,13 @@ class MaxHeap {
    * @returns Sorted storage array. Note that the array is 1-indexed (so the first element is null)
    */
   sort() {
-    // TODO
+    for (let i = this._count; i > 0; i--) {
+      this._swap(1, this._count);
+      this._count--;
+      this._sink(1);
+    }
+    
+    return this._storage;
   }
 }
 
